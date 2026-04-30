@@ -27,7 +27,7 @@ The app is built for self-use. Simplicity and low maintenance overhead take prio
 | UI Components | shadcn/ui | Accessible, unstyled base, composable |
 | Charts | Recharts | React ecosystem |
 | Hosting | Vercel | Static app + serverless AI routes, free tier |
-| AI | DeepSeek API (deepseek-chat) | Server-side only via Vercel functions |
+| AI | DeepSeek API (`deepseek-v4-flash`) | Server-side only via Vercel functions |
 
 **No auth.** This is a private single-household app. No login, no session management, no user table.
 
@@ -90,6 +90,7 @@ There is only one category of API route in this app: `app/api/ai/` serverless fu
 
 - All AI routes return a `{ data, error }` envelope.
 - Errors always include a `code` string and human-readable `message`.
+- AI routes must use the model from `shared/lib/ai-config.ts`; the current model is `deepseek-v4-flash`.
 - `DEEPSEEK_API_KEY` is accessed only inside these routes; never pass it to the client.
 - All other data operations are client-side via `shared/lib/db.ts`; no data API routes exist or should be created.
 

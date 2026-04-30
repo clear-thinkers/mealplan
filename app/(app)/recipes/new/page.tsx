@@ -1,13 +1,27 @@
 "use client"
 
-import { PlaceholderPage } from "@/shared/components/PlaceholderPage"
+import { useRouter } from "next/navigation"
+
+import { RecipeForm } from "@/modules/recipes/components/RecipeForm"
+import { emptyRecipeFormValues } from "@/modules/recipes/hooks/useRecipeForm"
+import type { RecipeFormData } from "@/modules/recipes/schemas/recipe-form-schema"
+import { createRecipe } from "@/shared/lib/services/recipe-service"
 
 export default function NewRecipePage() {
+  const router = useRouter()
+
+  async function saveRecipe(input: RecipeFormData) {
+    const recipe = await createRecipe(input)
+    router.push(`/recipes/${recipe.id}`)
+  }
+
   return (
-    <PlaceholderPage
+    <RecipeForm
+      defaultValues={emptyRecipeFormValues}
+      description="Capture the ingredients, steps, tags, and family adjustments for a reusable recipe."
+      onSubmit={saveRecipe}
+      submitLabel="Save recipe"
       title="New recipe"
-      description="Recipe creation will collect ingredients, steps, tags, and per-person notes."
-      actions={["Validate form fields", "Save through recipe service", "Return to the recipe library"]}
     />
   )
 }

@@ -11,69 +11,71 @@ Core jobs the app does:
 1. Plan weekly family meals ahead of time, broken down by person
 2. Convert meal plans into shopping lists grouped by store (Costco / Whole Foods / Chinese Grocery)
 3. Log what was actually cooked and how each family member responded to it
-4. Document family recipes (in Chinese or English or mixed)
+4. Document family recipes in Chinese, English, or mixed text
 5. Generate monthly and yearly reports on eating patterns and food preferences
 
 ---
 
 ## Current Status
 
-**In development — Phase 1 in progress.** Repo scaffolded, Next.js initialized, directory structure created. Supabase has been replaced with local-first Dexie.js architecture. See `docs/adr/0001-local-first-indexeddb-over-supabase.md`.
+**In development - Phase 3 planning.** Phase 2 recipe library is complete: recipe CRUD, Chinese-capable search, soft delete with undo, local-first persistence, automated checks, and manual dev testing are done. See `docs/adr/0001-local-first-indexeddb-over-supabase.md`.
 
 ---
 
 ## Phase Overview
 
-```
-Phase 1 → Foundation          ← IN PROGRESS
-Phase 2 → Recipe Library
-Phase 3 → Meal Planning
-Phase 4 → Shopping Lists
-Phase 5 → Meal Logging
-Phase 6 → Preferences Engine
-Phase 7 → Reports
-Phase 8 → AI Layer
+```text
+Phase 1 -> Foundation          COMPLETE
+Phase 2 -> Recipe Library      COMPLETE
+Phase 3 -> Meal Planning       NEXT
+Phase 4 -> Shopping Lists
+Phase 5 -> Meal Logging
+Phase 6 -> Preferences Engine
+Phase 7 -> Reports
+Phase 8 -> AI Layer
 ```
 
 Phases are sequential. Do not begin a phase until the prior phase is stable and manually tested.
 
 ---
 
-## Phase 1 — Foundation
+## Phase 1 - Foundation
 **Goal:** Working Next.js app with Dexie initialized and base navigation. No auth. Nothing functionally useful yet.
 
 **Deliverables:**
-- [ ] Repo initialized (Next.js 14, TypeScript, Tailwind, shadcn/ui)
-- [ ] Dexie.js installed, `lib/db-schema.ts` created with full schema per ARCH.md
-- [ ] `lib/db.ts` abstraction layer created — all future DB calls go through here
-- [ ] `lib/constants.ts` created with FAMILY_MEMBERS, STORES, MEAL_TIMES
-- [ ] Fuse.js installed and configured in `lib/search.ts`
-- [ ] Base layout: sidebar navigation (desktop) + bottom nav (mobile)
-- [ ] All placeholder pages created per nav structure in ARCH.md
-- [ ] `/settings` page scaffolded (export/import UI — non-functional for now)
-- [ ] Vercel deployment connected to GitHub main branch
-- [ ] `DEEPSEEK_API_KEY` added to Vercel environment variables
+- [x] Repo initialized (Next.js 14, TypeScript, Tailwind, shadcn/ui)
+- [x] Dexie.js installed, `shared/lib/db-schema.ts` created with full schema per ARCH.md
+- [x] `shared/lib/db.ts` abstraction layer created; all future DB calls go through here
+- [x] `shared/lib/constants.ts` created with FAMILY_MEMBERS, STORES, MEAL_TIMES
+- [x] Fuse.js installed and configured in `shared/lib/search.ts`
+- [x] Base layout: sidebar navigation (desktop) + bottom nav (mobile)
+- [x] All placeholder pages created per nav structure in ARCH.md
+- [x] `/settings` page scaffolded (export/import UI shell, non-functional for now)
+- [x] Vercel deployment connected to GitHub main branch
+- [x] `DEEPSEEK_API_KEY` added to Vercel environment variables
 
 **Done when:** App loads at localhost:3000, navigation works across all pages, Dexie initializes without errors in browser console.
 
+**Status:** Complete.
+
 ---
 
-## Phase 2 — Recipe Library
+## Phase 2 - Recipe Library
 **Goal:** Full recipe CRUD. This is the core asset the rest of the app depends on.
 
 **Deliverables:**
-- [ ] Recipe list page with Fuse.js search (supports Chinese text)
-- [ ] Recipe detail page — mobile-optimized for use while cooking
-- [ ] Recipe create/edit form:
+- [x] Recipe list page with Fuse.js search (supports Chinese text)
+- [x] Recipe detail page, mobile-optimized for use while cooking
+- [x] Recipe create/edit form:
   - Name (Chinese/English)
   - Ingredients with quantities and units
   - Steps (ordered)
-  - Tags (e.g., 上海菜, 快手, 高蛋白, 汤, 主食)
-  - Per-person modification notes (e.g., "无辣 for kids")
+  - Tags, for example Shanghai, quick, high protein, soup, staple
+  - Per-person modification notes, for example "no spice for kids"
   - Serves count
-  - Source/origin field (e.g., "妈妈配方")
-- [ ] Soft delete with undo
-- [ ] All data persisted via `lib/db.ts` — no direct Dexie calls in components
+  - Source/origin field, for example "family recipe"
+- [x] Soft delete with undo
+- [x] All data persisted via `shared/lib/db.ts`; no direct Dexie calls in components
 
 **Dexie tables used:** `recipes`, `recipeIngredients`, `recipeSteps`, `recipeMemberNotes`
 
@@ -81,13 +83,15 @@ Phases are sequential. Do not begin a phase until the prior phase is stable and 
 
 **Done when:** Can create, view, edit, search, and soft-delete 20+ recipes including Chinese-named ones. Search returns relevant results for Chinese queries.
 
+**Status:** Complete.
+
 ---
 
-## Phase 3 — Meal Planning
+## Phase 3 - Meal Planning
 **Goal:** Plan a full week of meals for the family, broken down by person and meal slot.
 
 **Deliverables:**
-- [ ] Weekly calendar grid: Mon–Sun × Breakfast / Lunch / Dinner / Snack
+- [ ] Weekly calendar grid: Monday-Sunday x Breakfast / Lunch / Dinner / Snack
 - [ ] Assign recipes to slots with per-person serving assignments
 - [ ] Support "shared base + modifications" pattern (one recipe, different notes per person)
 - [ ] Support slots with no recipe (eating out, skip, etc.)
@@ -100,17 +104,17 @@ Phases are sequential. Do not begin a phase until the prior phase is stable and 
 
 ---
 
-## Phase 4 — Shopping Lists
+## Phase 4 - Shopping Lists
 **Goal:** Auto-generate a store-grouped shopping list from a weekly meal plan.
 
 **Deliverables:**
-- [ ] Shopping preference table (ingredient → store mapping), user-editable via `/settings`
+- [ ] Shopping preference table (ingredient -> store mapping), user-editable via `/settings`
 - [ ] Mechanical ingredient aggregation from a week's meal plan
 - [ ] List grouped by: Costco / Whole Foods / Chinese Grocery / Unassigned
 - [ ] Unassigned items shown separately with AI-suggested store (confirm before saving)
 - [ ] Manual add/remove items
 - [ ] Check-off items while shopping
-- [ ] Export as self-contained HTML file — Fu opens on his phone via iMessage/OneDrive, no account needed
+- [ ] Export as self-contained HTML file; Fu opens on his phone via iMessage/OneDrive, no account needed
 
 **Dexie tables used:** `shoppingPreferences`, `shoppingLists`, `shoppingListItems`
 
@@ -118,12 +122,12 @@ Phases are sequential. Do not begin a phase until the prior phase is stable and 
 
 ---
 
-## Phase 5 — Meal Logging
+## Phase 5 - Meal Logging
 **Goal:** Quickly record what was actually eaten and how each person responded.
 
 **Deliverables:**
 - [ ] Log entry: date + meal time + what was cooked (link to recipe or free text)
-- [ ] Per-person quick checklist: ate it / partial / rejected + optional satisfaction (1–5 stars)
+- [ ] Per-person quick checklist: ate it / partial / rejected + optional satisfaction (1-5 stars)
 - [ ] Optional free-text notes per log entry
 - [ ] Log history view (calendar and list views)
 - [ ] Entire logging flow completable in under 30 seconds on mobile
@@ -136,7 +140,7 @@ Phases are sequential. Do not begin a phase until the prior phase is stable and 
 
 ---
 
-## Phase 6 — Preferences Engine
+## Phase 6 - Preferences Engine
 **Goal:** Build per-person taste profiles from logged data.
 
 **Deliverables:**
@@ -152,7 +156,7 @@ Phases are sequential. Do not begin a phase until the prior phase is stable and 
 
 ---
 
-## Phase 7 — Reports
+## Phase 7 - Reports
 **Goal:** Monthly and yearly summaries of family eating patterns.
 
 **Deliverables:**
@@ -160,24 +164,24 @@ Phases are sequential. Do not begin a phase until the prior phase is stable and 
 - [ ] Yearly report: trend lines, seasonal patterns, health goal alignment
 - [ ] All charts built with Recharts
 - [ ] Export to PDF (nice to have)
-- [ ] AI narrative summary (optional, generated on demand) — see Phase 8
+- [ ] AI narrative summary (optional, generated on demand); see Phase 8
 
 **Done when:** Can generate a monthly report that surfaces one meaningful insight not obvious from raw logs.
 
 ---
 
-## Phase 8 — AI Layer
+## Phase 8 - AI Layer
 **Goal:** Add AI features on top of the stable data layer. These are enhancements, not core functionality.
 
 **Deliverables (in priority order):**
-- [ ] **Recipe parser:** paste freeform text → structured recipe draft for review
-- [ ] **Meal plan suggester:** AI drafts next week's plan based on library + preferences + recency
-- [ ] **Shopping list store router:** suggest store for unassigned ingredients
-- [ ] **Preference summarizer:** plain-language taste profile per person
-- [ ] **Report narrative:** 2–3 paragraph human-readable monthly summary
-- [ ] **Recipe Q&A:** ask about a recipe (modifications, substitutions, nutrition context)
+- [ ] Recipe parser: paste freeform text -> structured recipe draft for review
+- [ ] Meal plan suggester: AI drafts next week's plan based on library + preferences + recency
+- [ ] Shopping list store router: suggest store for unassigned ingredients
+- [ ] Preference summarizer: plain-language taste profile per person
+- [ ] Report narrative: 2-3 paragraph human-readable monthly summary
+- [ ] Recipe Q&A: ask about a recipe (modifications, substitutions, nutrition context)
 
-**Rules:** See AGENT_RULES.md §5. AI writes to draft/suggestion state only. All features degrade gracefully if API is unavailable.
+**Rules:** See AGENT_RULES.md section 5. AI writes to draft/suggestion state only. All features degrade gracefully if API is unavailable.
 
 **Done when:** All 6 AI features implemented and manually tested, each with a working non-AI fallback.
 
@@ -185,8 +189,8 @@ Phases are sequential. Do not begin a phase until the prior phase is stable and 
 
 ## Out of Scope (for now)
 
-- Nutrition/macro tracking — not reliable enough for home Chinese cooking
-- Multi-household support — this is a private app
+- Nutrition/macro tracking; not reliable enough for home Chinese cooking
+- Multi-household support; this is a private app
 - Public recipe sharing
 - Integration with external recipe sources
 - Automated grocery ordering
@@ -196,8 +200,8 @@ Phases are sequential. Do not begin a phase until the prior phase is stable and 
 
 ## Key Constraints to Carry Through All Phases
 
-1. Mobile-first for logging (Phase 5) — that flow is used in the kitchen
+1. Mobile-first for logging (Phase 5); that flow is used in the kitchen
 2. Chinese text works everywhere content is stored, searched, or displayed
-3. Shopping list export as HTML — must open correctly on Fu's phone without any account
-4. AI is always optional — every feature works without it
-5. All DB access through `lib/db.ts` — never call Dexie directly from components
+3. Shopping list export as HTML must open correctly on Fu's phone without any account
+4. AI is always optional; every feature works without it
+5. All DB access goes through `shared/lib/db.ts`; never call Dexie directly from components

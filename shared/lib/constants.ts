@@ -50,7 +50,7 @@ export const STORES = {
   UNASSIGNED: "unassigned",
 } as const satisfies Record<string, StoreId>
 
-export const STORE_LABELS: Record<string, string> = {
+export const STORE_LABELS: Record<StoreId, string> = {
   costco: "Costco",
   wholefoods: "Whole Foods",
   chinese_grocery: "Chinese Grocery",

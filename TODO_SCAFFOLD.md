@@ -17,5 +17,5 @@
 - [x] Scaffold `/settings` page (export/import UI shell - non-functional for now)
 - [x] Verify Dexie initializes without errors in browser console
 - [x] Set up git: https://github.com/clear-thinkers/mealplan.git
-- [ ] Add `DEEPSEEK_API_KEY` to Vercel environment variables
-- [ ] Deploy to Vercel and confirm app loads
+- [x] Add `DEEPSEEK_API_KEY` to Vercel environment variables
+- [x] Deploy to Vercel and confirm app loads

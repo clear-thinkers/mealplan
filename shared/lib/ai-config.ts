@@ -1,0 +1,1 @@
+export const DEEPSEEK_MODEL = "deepseek-v4-flash"
