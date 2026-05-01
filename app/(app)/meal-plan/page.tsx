@@ -1,13 +1,21 @@
 "use client"
 
-import { PlaceholderPage } from "@/shared/components/PlaceholderPage"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
+
+import { getWeekStart } from "@/shared/lib/services/meal-plan-service"
 
 export default function MealPlanPage() {
+  const router = useRouter()
+
+  useEffect(() => {
+    router.replace(`/meal-plan/${getWeekStart(new Date())}`)
+  }, [router])
+
   return (
-    <PlaceholderPage
-      title="Meal plan"
-      description="The current week grid will organize meals by day, meal time, and family member."
-      actions={["Show this week's grid", "Assign recipes or free-text meals", "Copy a prior week"]}
-    />
+    <div className="rounded-[10px] border border-border bg-card px-3 py-8 text-center text-[13px] text-text-mid">
+      Loading this week...
+    </div>
   )
 }
+

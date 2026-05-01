@@ -88,7 +88,7 @@ Phases are sequential. Do not begin a phase until the prior phase is stable and 
 ---
 
 ## Phase 3 - Meal Planning
-**Goal:** Plan a full week of meals for the family, broken down by person and meal slot.
+**Goal:** Plan a full week of meals for the family, broken down by person and meal slot. Also deliver the Controls page and seasoning quick-select to support faster recipe authoring.
 
 **Deliverables:**
 - [ ] Weekly calendar grid: Monday-Sunday x Breakfast / Lunch / Dinner / Snack
@@ -97,10 +97,13 @@ Phases are sequential. Do not begin a phase until the prior phase is stable and 
 - [ ] Support slots with no recipe (eating out, skip, etc.)
 - [ ] Week navigation (prev/next week)
 - [ ] Copy last week's plan as starting draft
+- [ ] Seasoning quick-select panel on recipe ingredient form: tap to check pantry seasonings (盐 糖 油 etc.) as `RecipeIngredient` rows; tapping a checked item expands optional quantity/unit input
+- [ ] Controls page (`/controls`): manage household pantry seasoning list — add, reorder, flag as low, remove; first-visit seed prompt with common Chinese cooking staples
+- [ ] Controls page navigates to `/controls/store-preferences` for ingredient → store mapping (moves from `/settings`; see ADR-0002)
 
-**Dexie tables used:** `mealPlans`, `mealPlanSlots`, `plannedServings`
+**Dexie tables used:** `mealPlans`, `mealPlanSlots`, `plannedServings`, `pantrySeasonings`
 
-**Done when:** Can plan a full week, see each person's meals at a glance, and navigate between weeks.
+**Done when:** Can plan a full week, see each person's meals at a glance, navigate between weeks, manage the pantry seasoning list, and use the seasoning quick-select when editing any recipe.
 
 ---
 
@@ -108,7 +111,8 @@ Phases are sequential. Do not begin a phase until the prior phase is stable and 
 **Goal:** Auto-generate a store-grouped shopping list from a weekly meal plan.
 
 **Deliverables:**
-- [ ] Shopping preference table (ingredient -> store mapping), user-editable via `/settings`
+- [ ] Shopping preference table (ingredient -> store mapping) at `/controls/store-preferences` (moved from `/settings` in Phase 3; service layer unchanged)
+- [ ] Auto-include pantry seasonings flagged as low (`isLow: true`) in generated shopping lists
 - [ ] Mechanical ingredient aggregation from a week's meal plan
 - [ ] List grouped by: Costco / Whole Foods / Chinese Grocery / Unassigned
 - [ ] Unassigned items shown separately with AI-suggested store (confirm before saving)

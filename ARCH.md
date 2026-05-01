@@ -54,6 +54,7 @@ dietapp/
 │   │   ├── schemas/            # Zod validation schemas
 │   │   └── types.ts
 │   ├── meal-plan/
+│   ├── controls/               # Pantry seasonings CRUD, store preferences nav
 │   ├── shopping/
 │   ├── logging/
 │   ├── preferences/
@@ -174,6 +175,22 @@ interface PlannedServing {
 }
 ```
 
+### Pantry Seasonings
+
+```typescript
+interface PantrySeasoning {
+  id: string
+  name: string             // "盐", "糖", "油", "酱油" — Chinese or English
+  isLow: boolean           // user-flagged as running low; auto-added to shopping list (Phase 4)
+  sortOrder: number        // user-controlled display order
+  notes?: string
+  createdAt: string
+  updatedAt: string
+}
+```
+
+`pantrySeasonings` is user-managed. The app offers a seed prompt (common Chinese cooking staples) on first visit to `/controls`. The quick-select panel on the recipe ingredient form reads from this table; checked items become ordinary `RecipeIngredient` rows — no special flag on `RecipeIngredient`.
+
 ### Shopping
 
 ```typescript
@@ -269,6 +286,7 @@ export const db = new Dexie('dietapp') as Dexie & {
   mealPlans: EntityTable<MealPlan, 'id'>;
   mealPlanSlots: EntityTable<MealPlanSlot, 'id'>;
   plannedServings: EntityTable<PlannedServing, 'id'>;
+  pantrySeasonings: EntityTable<PantrySeasoning, 'id'>;  // Phase 3 — see ADR-0002
   shoppingPreferences: EntityTable<ShoppingPreference, 'id'>;
   shoppingLists: EntityTable<ShoppingList, 'id'>;
   shoppingListItems: EntityTable<ShoppingListItem, 'id'>;
@@ -291,6 +309,11 @@ db.version(1).stores({
   mealLogs:            '++id, logDate, mealTime, isDeleted',
   actualServings:      '++id, mealLogId, familyMemberId',
   preferenceRecords:   '++id, [familyMemberId+recipeId], familyMemberId',
+});
+
+// Version 2: adds pantrySeasonings table (Phase 3 — ADR-0002)
+db.version(2).stores({
+  pantrySeasonings: '++id, isLow, sortOrder',
 });
 ```
 
@@ -386,21 +409,24 @@ No `NEXT_PUBLIC_` variables needed. The app has no runtime configuration that ne
 /recipes/[id]        Recipe detail (mobile cooking view)
 /recipes/[id]/edit   Edit recipe
 
-/meal-plan           Current week grid
-/meal-plan/[date]    Specific week
+/meal-plan                      Current week grid
+/meal-plan/[date]               Specific week
 
-/shopping            Current shopping list
-/shopping/[id]       Specific list (share = export HTML, no route needed)
+/controls                       Household controls hub (Phase 3+)
+/controls/store-preferences     Ingredient → store mapping (moved from /settings — ADR-0002)
 
-/log                 Log entry — today default
-/log/history         Past logs calendar view
+/shopping                       Current shopping list
+/shopping/[id]                  Specific list (share = export HTML, no route needed)
 
-/preferences         Per-person taste profiles
+/log                            Log entry — today default
+/log/history                    Past logs calendar view
 
-/reports/monthly     Monthly report
-/reports/yearly      Yearly report
+/preferences                    Per-person taste profiles
 
-/settings            Export data, import data, manage store preferences
+/reports/monthly                Monthly report
+/reports/yearly                 Yearly report
+
+/settings                       Export data, import data
 ```
 
 ---

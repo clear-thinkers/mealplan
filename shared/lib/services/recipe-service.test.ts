@@ -121,7 +121,7 @@ describe("recipe service", () => {
       createRecipe({
         ...baseInput,
         memberNotes: [{ familyMemberId: "guest", notes: "bad" }],
-      } as RecipeFormData)
+      } as unknown as RecipeFormData)
     ).rejects.toThrow("Unknown family member")
   })
 
