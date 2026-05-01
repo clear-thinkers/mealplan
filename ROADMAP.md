@@ -97,9 +97,9 @@ Phases are sequential. Do not begin a phase until the prior phase is stable and 
 - [ ] Support slots with no recipe (eating out, skip, etc.)
 - [ ] Week navigation (prev/next week)
 - [ ] Copy last week's plan as starting draft
-- [ ] Seasoning quick-select panel on recipe ingredient form: tap to check pantry seasonings (盐 糖 油 etc.) as `RecipeIngredient` rows; tapping a checked item expands optional quantity/unit input
-- [ ] Controls page (`/controls`): manage household pantry seasoning list — add, reorder, flag as low, remove; first-visit seed prompt with common Chinese cooking staples
-- [ ] Controls page navigates to `/controls/store-preferences` for ingredient → store mapping (moves from `/settings`; see ADR-0002)
+- [x] Seasoning quick-select panel on recipe ingredient form: tap to check pantry seasonings (盐 糖 油 etc.) as `RecipeIngredient` rows; tapping a checked item expands optional quantity/unit input
+- [x] Controls page (`/controls`): manage household pantry seasoning list — add, reorder, flag as low, remove; first-visit seed prompt with common Chinese cooking staples
+- [x] Controls page navigates to `/controls/store-preferences` for ingredient → store mapping (moves from `/settings`; see ADR-0002)
 
 **Dexie tables used:** `mealPlans`, `mealPlanSlots`, `plannedServings`, `pantrySeasonings`
 

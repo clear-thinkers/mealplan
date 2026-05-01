@@ -76,6 +76,14 @@ export interface PlannedServing {
   portionNotes?: string
 }
 
+export interface PantrySeasoning extends TimestampedRecord {
+  id: string
+  name: string
+  isLow: boolean
+  sortOrder: number
+  notes?: string
+}
+
 export interface ShoppingPreference extends TimestampedRecord {
   id: string
   ingredientName: string
@@ -143,6 +151,7 @@ export interface DietAppTables {
   mealPlans: MealPlan
   mealPlanSlots: MealPlanSlot
   plannedServings: PlannedServing
+  pantrySeasonings: PantrySeasoning
   shoppingPreferences: ShoppingPreference
   shoppingLists: ShoppingList
   shoppingListItems: ShoppingListItem
@@ -153,7 +162,7 @@ export interface DietAppTables {
 
 export const DB_NAME = "dietapp"
 
-export const DB_VERSION = 1
+export const DB_VERSION = 2
 
 export const DB_STORES = {
   recipes: "&id, name, isDeleted, updatedAt",
@@ -163,6 +172,7 @@ export const DB_STORES = {
   mealPlans: "&id, weekStart, isDeleted, updatedAt",
   mealPlanSlots: "&id, mealPlanId, dayOfWeek, mealTime",
   plannedServings: "&id, mealPlanSlotId, familyMemberId",
+  pantrySeasonings: "&id, isLow, sortOrder, updatedAt",
   shoppingPreferences: "&id, ingredientName, preferredStore, confirmed",
   shoppingLists: "&id, mealPlanId, isDeleted, updatedAt",
   shoppingListItems: "&id, shoppingListId, store, isChecked",

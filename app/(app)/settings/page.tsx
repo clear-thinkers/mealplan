@@ -11,7 +11,7 @@ export default function SettingsPage() {
         </p>
         <h2 className="mt-1 text-[19px] font-semibold">Settings</h2>
         <p className="mt-1 max-w-2xl text-[11px] leading-5 text-green-muted">
-          Export, import, and store preference tools will live here.
+          Export and import tools for the local IndexedDB data store.
         </p>
       </header>
 
@@ -62,16 +62,6 @@ export default function SettingsPage() {
           </button>
         </section>
       </div>
-
-      <section className="rounded-[10px] border border-border bg-card px-3 py-3">
-        <h3 className="text-[14px] font-semibold text-text-dark">
-          Store preferences
-        </h3>
-        <p className="mt-1 text-[11px] leading-5 text-text-mid">
-          Ingredient-to-store mappings will be managed here once shopping lists
-          are implemented.
-        </p>
-      </section>
     </section>
   )
 }

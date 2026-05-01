@@ -8,6 +8,7 @@ import {
   type MealLog,
   type MealPlan,
   type MealPlanSlot,
+  type PantrySeasoning,
   type PlannedServing,
   type PreferenceRecord,
   type Recipe,
@@ -27,6 +28,7 @@ export type DietAppDb = Dexie & {
   mealPlans: EntityTable<MealPlan, "id">
   mealPlanSlots: EntityTable<MealPlanSlot, "id">
   plannedServings: EntityTable<PlannedServing, "id">
+  pantrySeasonings: EntityTable<PantrySeasoning, "id">
   shoppingPreferences: EntityTable<ShoppingPreference, "id">
   shoppingLists: EntityTable<ShoppingList, "id">
   shoppingListItems: EntityTable<ShoppingListItem, "id">

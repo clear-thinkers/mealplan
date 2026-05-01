@@ -5,9 +5,9 @@ import { usePathname } from "next/navigation"
 import {
   BarChart3,
   CalendarDays,
+  CookingPot,
   ClipboardList,
   Home,
-  ListChecks,
   NotebookTabs,
   Settings,
   ShoppingBasket,
@@ -20,6 +20,7 @@ const primaryNavItems = [
   { href: "/dashboard", label: "Dashboard", icon: Home },
   { href: "/recipes", label: "Recipes", icon: NotebookTabs },
   { href: "/meal-plan", label: "Meal plan", icon: CalendarDays },
+  { href: "/controls", label: "Controls", icon: CookingPot },
   { href: "/shopping", label: "Shopping", icon: ShoppingBasket },
   { href: "/log", label: "Log", icon: ClipboardList },
   { href: "/preferences", label: "Preferences", icon: SlidersHorizontal },
@@ -31,8 +32,8 @@ const mobileNavItems = [
   { href: "/dashboard", label: "Home", icon: Home },
   { href: "/recipes", label: "Recipes", icon: NotebookTabs },
   { href: "/meal-plan", label: "Plan", icon: CalendarDays },
+  { href: "/controls", label: "Controls", icon: CookingPot },
   { href: "/shopping", label: "Shop", icon: ShoppingBasket },
-  { href: "/log", label: "Log", icon: ListChecks },
 ]
 
 function isActivePath(pathname: string, href: string): boolean {
